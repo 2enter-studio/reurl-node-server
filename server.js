@@ -7,6 +7,8 @@ const app = express();
 const mongo_uri = process.env.MONGO_URI;
 const port = process.env.PORT || 3000;
 
+
+
 mongoose.connect(mongo_uri)
 
 const connection = mongoose.connection
@@ -14,13 +16,18 @@ const connection = mongoose.connection
 connection.once('open', async () => {
     const collection  = connection.db.collection("reurls");
     collection.find({}).toArray((err, data) => {
+        console.log(data)
         data.forEach(element => {
-            app.get(element.route, (req, res) => {
+            app.get(`/${element.route}`, (req, res) => {
                 res.redirect(element.link);
             });
         });
     });
 });
+
+connection.on('error', (err) => {
+    console.log(err)
+})
 
 const server = app.listen(port, () => {
     console.log(`Server running on port ${port}`);
