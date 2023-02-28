@@ -8,6 +8,13 @@ const mongo_uri = process.env.MONGO_URI;
 const port = process.env.PORT || 3000;
 
 
+const reurl_schema = new mongoose.Schema({
+    route: String,
+    link: String
+});
+
+const Reurl = mongoose.model('reurls', reurl_schema);
+
 
 mongoose.connect(mongo_uri)
 
